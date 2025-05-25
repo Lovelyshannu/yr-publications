@@ -1,0 +1,28 @@
+<%- include('partials/header', { title: 'Articles', active: 'articles' }) %>
+
+<section class="articles-section">
+  <h1>Published Articles</h1>
+
+  <form method="GET" action="/articles" class="search-form">
+    <input type="text" name="search" placeholder="Search by title or author" value="<%= typeof search !== 'undefined' ? search : '' %>" />
+    <button type="submit">Search</button>
+  </form>
+
+  <% if(articles.length === 0) { %>
+    <p>No articles found.</p>
+  <% } else { %>
+    <ul class="article-list">
+      <% articles.forEach(article => { %>
+        <li>
+          <h3><%= article.title %></h3>
+          <p><strong>Author:</strong> <%= article.author %></p>
+          <p><%= article.description %></p>
+          <a href="/uploads/articles/<%= article.fileName %>" target="_blank" download>Download Article</a>
+          <p><small>Published on <%= article.createdAt.toDateString() %></small></p>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
