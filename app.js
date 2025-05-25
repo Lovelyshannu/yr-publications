@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/Shanmukh-Publication', {
+mongoose.connect('mongodb+srv://vasamshettyshanmukh:<db_password>@shanmukh-publication.kbjywek.mongodb.net/', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected'))
@@ -51,7 +51,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/Shanmukh-Publication' })
+  store: MongoStore.create({ mongoUrl: 'mongodb+srv://vasamshettyshanmukh:<db_password>@shanmukh-publication.kbjywek.mongodb.net/' })
 }));
 
 app.use(flash());
