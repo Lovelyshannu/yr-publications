@@ -16,8 +16,8 @@ module.exports = {
     res.redirect('/'); // Redirect to home if already logged in
   },
 
-  ensureAdmin: (req, res, next) => {
-    if (req.session.user && req.session.user.role === 'admin') {
+   ensureAdmin: (req, res, next) => {
+    if (req.session.user && req.session.user.isAdmin) {
       return next();
     }
     req.flash('error_msg', 'Admin access only');
