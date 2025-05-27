@@ -5,13 +5,12 @@ const MongoStore = require('connect-mongo');
 const path = require('path');
 const multer = require('multer');
 const dotenv = require('dotenv');
-const flash = require('express-flash');
+const flash = require('./Middleware/flash');
 require('dotenv').config();
 
 dotenv.config();
 
 const app = express();
-
 
 // Set storage location and filename
 const storage = multer.diskStorage({
