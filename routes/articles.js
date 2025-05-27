@@ -5,6 +5,8 @@ const path = require('path');
 const articleController = require('../controllers/articleController');
 const { ensureAdmin } = require('../middleware/authMiddleware');
 
+console.log(__dirname);
+
 // Multer config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
