@@ -4,7 +4,7 @@ const fs = require('fs');
 
 exports.listArticles = async (req, res) => {
   try {
-    const articles = await Article.find().sort({ uploadDate: -1 });
+    const articles = await Article.find({ status: 'approved' }).sort({ createdAt: -1 });
     res.render('articles', { articles });
   } catch (err) {
     console.error(err);
@@ -29,72 +29,66 @@ exports.postUpload = async (req, res) => {
   }
 
   const { title, author, description } = req.body;
+  const file = req.file;
 
-  if (!req.files || !req.files.articleFile) {
+  if (!file) {
     req.flash('error_msg', 'No file uploaded');
     return res.redirect('/articles/upload');
   }
 
-  const articleFile = req.files.articleFile;
+  const allowedTypes = ['.pdf', '.doc', '.docx'];
+  const ext = path.extname(file.originalname).toLowerCase();
 
-  const allowedTypes = [
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  ];
-
-  if (!allowedTypes.includes(articleFile.mimetype)) {
-    req.flash('error_msg', 'Invalid file type. Allowed PDF, DOC, DOCX');
+  if (!allowedTypes.includes(ext)) {
+    req.flash('error_msg', 'Invalid file type. Only PDF, DOC, DOCX allowed');
     return res.redirect('/articles/upload');
   }
 
-  // Make sure the directory exists
   const uploadDir = path.join(__dirname, '..', 'uploads', 'articles');
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
   }
 
-  // Create a unique filename to avoid overwriting
-  const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(articleFile.name);
+  const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + ext;
   const uploadPath = path.join(uploadDir, uniqueName);
 
-  router.post('/upload', (req, res, next) => {
-  upload.single('file')(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      return res.status(400).send(err.message);
-    } else if (err) {
-      return res.status(400).send(err.message);
-    }
-    next();
-  });
-  }, (req, res) => {
-  // rest of your code here
-  });
+  try {
+    fs.renameSync(file.path, uploadPath); // move from tmp location to permanent one
 
-  articleFile.mv(uploadPath, async err => {
-    if (err) {
-      console.error(err);
-      req.flash('error_msg', 'File upload failed');
-      return res.redirect('/articles/upload');
-    }
+    const article = new Article({
+      title,
+      author,
+      description,
+      filePath: `/uploads/articles/${uniqueName}`,
+      submittedBy: req.session.user.id,  // assuming session stores user ID
+      status: 'pending' // marked for admin review
+    });
 
-    try {
-      const article = new Article({
-        title,
-        author,
-        description,
-        filePath: `/uploads/articles/${uniqueName}`
-      });
+    await article.save();
 
-      await article.save();
-      req.flash('success_msg', 'Article uploaded successfully');
-      res.redirect('/articles');
-    } catch (err) {
-      console.error(err);
-      // Delete the file if DB save fails
-      fs.unlinkSync(uploadPath);
-      req.flash('error_msg', 'Failed to save article');
-      res.redirect('/articles/upload');
-    }
-  });
+    req.flash('success_msg', 'Article uploaded successfully');
+    res.redirect('/articles');
+  } catch (err) {
+    console.error(err);
+    req.flash('error_msg', 'Failed to upload or save article');
+    res.redirect('/articles/upload');
+  }
 };
+
+exports.listPendingArticles = async (req, res) => {
+  const articles = await Article.find({ status: 'pending' }).populate('submittedBy');
+  res.render('adminReview', { articles });
+};
+
+exports.approveArticle = async (req, res) => {
+  await Article.findByIdAndUpdate(req.params.id, { status: 'approved' });
+  req.flash('success_msg', 'Article approved');
+  res.redirect('/articles/admin/review');
+};
+
+exports.rejectArticle = async (req, res) => {
+  await Article.findByIdAndUpdate(req.params.id, { status: 'rejected' });
+  req.flash('success_msg', 'Article rejected');
+  res.redirect('/articles/admin/review');
+};
+

@@ -1,11 +1,23 @@
 const mongoose = require('mongoose');
 
 const articleSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  author: { type: String, required: true },
-  description: { type: String },
-  filePath: { type: String, required: true }, // path to uploaded file
-  uploadDate: { type: Date, default: Date.now }
+  title: String,
+  author: String,
+  description: String,
+  filePath: String,
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending'
+  },
+  submittedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model('Article', articleSchema);

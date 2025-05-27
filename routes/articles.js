@@ -1,9 +1,11 @@
-const articleController = require('../controllers/articleController');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const articleController = require('../controllers/articleController');
+const { ensureAdmin } = require('../middleware/authMiddleware');
 
+// Multer config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
   filename: (req, file, cb) => {
@@ -11,26 +13,19 @@ const storage = multer.diskStorage({
     cb(null, uniqueSuffix + path.extname(file.originalname));
   }
 });
+const upload = multer({ dest: 'uploads/' });
 
-const upload = multer({ storage });
+// Show upload form
+router.get('/upload', articleController.getUpload);
 
-router.post('/upload', upload.single('file'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded');
-  }
-  // Save article data here or send response
-  res.send('File uploaded successfully: ' + req.file.filename);
-});
-
-module.exports = router;
+// Handle form POST with multer and controller
+router.post('/upload', upload.single('articleFile'), articleController.postUpload);
 
 // List articles
 router.get('/', articleController.listArticles);
 
-// Upload article page
-router.get('/upload', articleController.getUpload);
-
-// Handle upload article POST
-router.post('/upload', articleController.postUpload);
+router.get('/admin/review', ensureAdmin, articleController.listPendingArticles);
+router.post('/admin/approve/:id', ensureAdmin, articleController.approveArticle);
+router.post('/admin/reject/:id', ensureAdmin, articleController.rejectArticle);
 
 module.exports = router;

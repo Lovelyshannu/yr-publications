@@ -18,7 +18,12 @@
           <p><strong>Author:</strong> <%= article.author %></p>
           <p><%= article.description %></p>
           <a href="/uploads/articles/<%= article.fileName %>" target="_blank" download>Download Article</a>
-          <p><small>Published on <%= article.createdAt.toDateString() %></small></p>
+          <% if (article.createdAt) { %>
+            <p><small>Published on <%= article.createdAt.toDateString() %></small></p>
+            <% } else { %>
+              <p><small>Published date unavailable</small></p>
+            <% } 
+          %>
         </li>
       <% }) %>
     </ul>

@@ -5,7 +5,6 @@ const MongoStore = require('connect-mongo');
 const path = require('path');
 const multer = require('multer');
 const dotenv = require('dotenv');
-const fileUpload = require('express-fileupload');
 const flash = require('express-flash');
 require('dotenv').config();
 
@@ -43,9 +42,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 // EJS setup
 app.set('view engine', 'ejs');
@@ -57,7 +58,7 @@ console.log("Mongo URI:", process.env.MONGODB_URI);
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
   cookie: {
     secure: process.env.NODE_ENV === 'production',  // only send cookie over HTTPS in prod

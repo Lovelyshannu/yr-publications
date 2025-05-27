@@ -4,12 +4,21 @@ const Certificate = require('../models/certificate');
 const Invoice = require('../models/invoice');
 
 exports.dashboard = async (req, res) => {
-  try {
-    // You can fetch any required data for the dashboard here
-    res.render('admin');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
-  }
-};
+  const [users, articles, certificates, invoices] = await Promise.all([
+    User.find(),
+    Article.find(), // You can filter by status: 'pending' if needed
+    Certificate.find(),
+    Invoice.find()
+  ]);
 
+  res.render('admin', {
+    stats: {
+      users: users.length,
+      articles: articles.length,
+      certificates: certificates.length,
+      invoices: invoices.length
+    },
+    articles,
+    certificates
+  });
+};
