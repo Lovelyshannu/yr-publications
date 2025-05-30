@@ -1,6 +1,7 @@
 <%- include('partials/header', { title: 'Upload Article', active: 'upload' }) %>
 
 <section class="upload-section">
+  <div class="upload-card">
   <h1>Upload New Article</h1>
 
   <form method="POST" action="/articles/upload" enctype="multipart/form-data" class="upload-form">
@@ -18,6 +19,7 @@
 
     <button type="submit">Upload Article</button>
   </form>
+  </div>
 </section>
 
 <%- include('partials/footer') %>
