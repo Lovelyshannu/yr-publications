@@ -3,6 +3,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Flash message auto-dismiss
   const flashMessages = document.querySelectorAll('.flash-message');
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("show");
+    });
+    }
+  });
+
   flashMessages.forEach(msg => {
     setTimeout(() => {
       msg.style.display = 'none';
