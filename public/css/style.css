@@ -217,18 +217,21 @@ main {
 }
 
 .auth-card {
+  position: relative;
+  z-index: 1;
   background: white;
-  padding: 40px 30px;
+  padding: 50px 40px;          /* ⬅️ Increased padding */
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;            /* ⬅️ Increased width */
   text-align: center;
 }
 
+
 .auth-card h2 {
   margin-bottom: 25px;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   color: #2a4365;
 }
 
@@ -247,7 +250,7 @@ main {
 
 .auth-card input {
   padding: 10px 12px;
-  font-size: 1rem;
+  font-size: 1.05rem;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
@@ -283,17 +286,19 @@ main {
 }
 
 .upload-card {
+  position: relative;
+  z-index: 1;
   background: white;
-  padding: 40px 30px;
+  padding: 50px 40px;          /* ⬅️ Increased padding */
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;            /* ⬅️ Wider for file upload */
 }
 
 .upload-card h2 {
   margin-bottom: 25px;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   color: #2a4365;
   text-align: center;
 }
@@ -313,7 +318,7 @@ main {
 .upload-card input,
 .upload-card textarea {
   padding: 10px 12px;
-  font-size: 1rem;
+  font-size: 1.05rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   resize: vertical;
@@ -334,6 +339,43 @@ main {
 .upload-btn:hover {
   background: #2c5282;
 }
+
+/* Background image wrapper */
+.auth-section, .upload-section {
+  background: url('/images/bg.jpg') center/cover no-repeat;
+  position: relative;
+  min-height: calc(100vh - 140px);
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Optional: dark faded overlay */
+.auth-section::before,
+.upload-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.7); /* White faded effect */
+  z-index: 0;
+}
+
+/* Card on top of background */
+.auth-card, .upload-card {
+  position: relative;
+  z-index: 1;
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+
 
 
 
