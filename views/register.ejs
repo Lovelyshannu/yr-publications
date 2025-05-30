@@ -1,6 +1,7 @@
 <%- include('partials/header', { title: 'Register', active: 'register' }) %>
 
 <section class="auth-section">
+  <div class="auth-card">
   <h1>Register</h1>
   <form method="POST" action="/register" class="auth-form">
     <label for="name">Name:</label>
@@ -19,6 +20,7 @@
   </form>
 
   <p>Already have an account? <a href="/login">Login here</a>.</p>
+  </div>
 </section>
 
 <%- include('partials/footer') %>
