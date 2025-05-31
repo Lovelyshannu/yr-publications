@@ -22,22 +22,19 @@
   <ul>
     <% articles.forEach(article => { %>
       <li>
-  <h3><%= article.title %> by <%= article.author %></h3>
-  <a href="/admin/download/<%= article.filename %>">Download</a>
+        <h3><%= article.title %> by <%= article.author %></h3>
+        <a href="/uploads/<%= article.filename %>" target="_blank">View</a> |
+        <a href="/uploads/<%= article.filename %>" download>Download</a>
 
-  <% if (!article.isApproved) { %>
-    <form method="POST" action="/admin/articles/<%= article._id %>/approve" style="display:inline;">
-      <button type="submit">Approve</button>
-    </form>
-  <% } else { %>
-    <span style="color: green;">✔ Approved</span>
-  <% } %>
-</li>
-
-  <% } %>
-</li>
-
-    <% ) %>
+        <% if (!article.isApproved) { %>
+          <form method="POST" action="/admin/articles/<%= article._id %>/approve" style="display:inline;">
+            <button type="submit">Approve</button>
+          </form>
+        <% } else { %>
+          <span style="color: green;">✔ Approved</span>
+        <% } %>
+      </li>
+    <% }) %>
   </ul>
 
   <h2>Manage Certificates</h2>
@@ -46,6 +43,9 @@
       <li><%= cert.number %> - <%= cert.recipientName %></li>
     <% }) %>
   </ul>
+
+  <br>
+  <a href="/admin/dashboard" class="btn">Back to Dashboard</a>
 </section>
 
 <%- include('partials/footer') %>

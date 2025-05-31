@@ -13,6 +13,12 @@ router.get('/articles', isAuthenticated, isAdmin, adminController.listArticles);
 router.post('/articles/:id/approve', isAuthenticated, isAdmin, adminController.approveArticle);
 router.get('/certificates', isAuthenticated, isAdmin, adminController.listCertificates);
 
+router.post('/articles/:id/approve', isAdmin, async (req, res) => {
+  await Article.findByIdAndUpdate(req.params.id, { isApproved: true });
+  res.redirect('/admin/dashboard');
+});
+
+
 // Invoice generation endpoint example
 router.get('/invoice/:articleId', isAuthenticated, isAdmin, adminController.generateInvoice);
 

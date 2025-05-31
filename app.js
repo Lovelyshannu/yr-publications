@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -58,6 +58,7 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/', (req, res) => res.render('index'));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
