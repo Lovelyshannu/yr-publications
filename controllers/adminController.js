@@ -3,19 +3,35 @@ const Article = require('../models/article');
 const Certificate = require('../models/certificate');
 const Invoice = require('../models/invoice');
 
+// Admin dashboard
 exports.dashboard = async (req, res) => {
-  const userCount = await User.countDocuments();
-  const articleCount = await Article.countDocuments();
-  const certificateCount = await Certificate.countDocuments();
+  const users = await User.find();
+  const articles = await Article.find();
+  const certificates = await Certificate.find();
+  const invoices = await Invoice.find();
 
-  res.render('admin', { userCount, articleCount, certificateCount });
+  const stats = {
+    users: users.length,
+    articles: articles.length,
+    certificates: certificates.length,
+    invoices: invoices.length,
+  };
+
+  res.render('admin', {
+    stats,
+    users,
+    articles,
+    certificates,
+  });
 };
 
+// List users
 exports.listUsers = async (req, res) => {
   const users = await User.find();
   res.render('admin-users', { users });
 };
 
+// List articles
 exports.listArticles = async (req, res) => {
   const articles = await Article.find().populate('uploader');
   res.render('admin-articles', { articles });
@@ -36,7 +52,6 @@ exports.approveArticle = async (req, res) => {
   res.redirect('/admin/articles');
 };
 
-
 // Publish article
 exports.publishArticle = async (req, res) => {
   const article = await Article.findById(req.params.id);
@@ -51,12 +66,13 @@ exports.publishArticle = async (req, res) => {
   res.redirect('/admin/articles');
 };
 
-
+// List certificates
 exports.listCertificates = async (req, res) => {
   const certificates = await Certificate.find().populate('uploader');
   res.render('admin-certificates', { certificates });
 };
 
+// Generate invoice
 exports.generateInvoice = async (req, res) => {
   const articleId = req.params.articleId;
   const article = await Article.findById(articleId).populate('uploader');
@@ -66,7 +82,6 @@ exports.generateInvoice = async (req, res) => {
     return res.redirect('/admin/articles');
   }
 
-  // For demo, price is fixed or you can calculate dynamically
   const price = 1000;
 
   let invoice = await Invoice.findOne({ article: articleId });
@@ -75,7 +90,7 @@ exports.generateInvoice = async (req, res) => {
       article: articleId,
       user: article.uploader._id,
       amount: price,
-      date: new Date()
+      date: new Date(),
     });
     await invoice.save();
   }

@@ -27,13 +27,13 @@
                         <td><%= article.author %></td>
                         <td><%= article.description %></td>
                         <td>
-                            <a href="/uploads/<%= article.file %>" target="_blank">View</a> |
-                            <a href="/uploads/<%= article.file %>" download>Download</a>
+                            <a href="/uploads/<%= article.filename %>" target="_blank">View</a> |
+                            <a href="/uploads/<%= article.filename %>" download>Download</a>
                         </td>
                         <td><%= article.isApproved ? "Approved" : "Pending" %></td>
                         <td>
                             <% if (!article.isApproved) { %>
-                                <form action="/admin/approve/<%= article._id %>" method="POST">
+                                <form action="/admin/articles/<%= article._id %>/approve" method="POST">
                                     <button type="submit">Approve</button>
                                 </form>
                             <% } else { %>
@@ -48,6 +48,6 @@
         <p>No articles found.</p>
     <% } %>
 
-    <a href="/admin/dashboard">Back to Dashboard</a>
+    <a href="/admin/dashboard" class="btn">Back to Dashboard</a>
 </body>
 </html>

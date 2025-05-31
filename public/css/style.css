@@ -375,6 +375,14 @@ main {
   text-align: center;
 }
 
+.btn {
+  padding: 10px 20px;
+  background: #0066cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
 
 
 
