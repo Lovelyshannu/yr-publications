@@ -4,24 +4,35 @@ const path = require('path');
 const fs = require('fs');
 const adminController = require('../controllers/adminController');
 const { isAdmin, isAuthenticated } = require('../Middleware/authMiddleware');
+const Article = require('../models/Article');
 
+// Admin dashboard
 router.get('/', isAuthenticated, isAdmin, adminController.dashboard);
 
+// Admin users list
 router.get('/users', isAuthenticated, isAdmin, adminController.listUsers);
-router.get('/admin', ensureAdmin, adminController.dashboard);
-router.get('/articles', isAuthenticated, isAdmin, adminController.listArticles);
-router.post('/articles/:id/approve', isAuthenticated, isAdmin, adminController.approveArticle);
-router.get('/certificates', isAuthenticated, isAdmin, adminController.listCertificates);
 
-router.post('/articles/:id/approve', isAdmin, async (req, res) => {
-  await Article.findByIdAndUpdate(req.params.id, { isApproved: true });
-  res.redirect('/admin/dashboard');
+// Admin articles page
+router.get('/articles', isAuthenticated, isAdmin, adminController.listArticles);
+
+// Approve article
+router.post('/articles/:id/approve', isAuthenticated, isAdmin, async (req, res) => {
+  await Article.findByIdAndUpdate(req.params.id, { status: 'approved' });
+  req.flash('success_msg', 'Article approved');
+  res.redirect('/admin/articles');
 });
 
+// Decline article
+router.post('/articles/:id/decline', isAuthenticated, isAdmin, async (req, res) => {
+  await Article.findByIdAndUpdate(req.params.id, { status: 'declined' });
+  req.flash('error_msg', 'Article declined');
+  res.redirect('/admin/articles');
+});
 
-// Invoice generation endpoint example
-router.get('/invoice/:articleId', isAuthenticated, isAdmin, adminController.generateInvoice);
+// Certificates management
+router.get('/certificates', isAuthenticated, isAdmin, adminController.listCertificates);
 
+// Download articles
 router.get('/download/:filename', isAuthenticated, isAdmin, (req, res) => {
   const filePath = path.join(__dirname, '..', 'uploads', 'articles', req.params.filename);
   fs.access(filePath, fs.constants.F_OK, (err) => {
@@ -33,6 +44,10 @@ router.get('/download/:filename', isAuthenticated, isAdmin, (req, res) => {
   });
 });
 
+// Optional: Invoice route
+router.get('/invoice/:articleId', isAuthenticated, isAdmin, adminController.generateInvoice);
+
+// Fallback admin checker
 function ensureAdmin(req, res, next) {
   if (req.session.user && req.session.user.isAdmin) {
     next();
@@ -40,6 +55,5 @@ function ensureAdmin(req, res, next) {
     res.redirect('/login');
   }
 }
-
 
 module.exports = router;

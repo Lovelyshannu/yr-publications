@@ -36,12 +36,17 @@
             <li>
               <h3><%= article.title %> by <%= article.author %></h3>
               <a href="/admin/download/<%= article.filename %>">Download</a>
-              <% if (!article.isApproved) { %>
+              <% if (article.status === 'pending') { %>
                 <form method="POST" action="/admin/articles/<%= article._id %>/approve" style="display:inline;">
-                  <button type="submit" class="approve-btn">Approve</button>
+                  <button type="submit" class="btn btn-approve">Approve</button>
                 </form>
-              <% } else { %>
+                <form method="POST" action="/admin/articles/<%= article._id %>/decline" style="display:inline; margin-left:10px;">
+                  <button type="submit" class="btn btn-decline">Decline</button>
+                </form>
+              <% } else if (article.status === 'approved') { %>
                 <span class="approved">✔ Approved</span>
+              <% } else if (article.status === 'declined') { %>
+                <span class="declined">✖ Declined</span>
               <% } %>
             </li>
           <% }) %>

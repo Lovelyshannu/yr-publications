@@ -7,7 +7,17 @@ const articleSchema = new mongoose.Schema({
   filename: String,
   filePath: String,
   uploader: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  isApproved: { type: Boolean, default: false }, // 🔥 New field
+
+  // ✅ Replace this:
+  // isApproved: { type: Boolean, default: false },
+
+  // ✅ With this:
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'declined'],
+    default: 'pending'
+  },
+
   createdAt: { type: Date, default: Date.now }
 });
 
