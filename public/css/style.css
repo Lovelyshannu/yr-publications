@@ -460,6 +460,56 @@ main {
   font-weight: bold;
 }
 
+/* === Admin Articles Card Styling === */
+.admin-container h1 {
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #2b6cb0;
+}
+
+.card p {
+  margin: 6px 0;
+}
+
+.card-actions {
+  margin-top: 15px;
+}
+
+.card .btn {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.card .btn-view {
+  background: #3182ce;
+  color: white;
+}
+
+.card .btn-approve {
+  background: #38a169;
+  color: white;
+  border: none;
+}
+
+.card .btn:hover {
+  opacity: 0.9;
+}
+
+.pending {
+  color: #d69e2e;
+  font-weight: bold;
+}
 
 
 

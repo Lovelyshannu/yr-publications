@@ -1,53 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin - Articles</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-    <h1>Admin - Articles Dashboard</h1>
+<%- include('partials/header', { title: 'Manage Articles', active: 'admin-articles' }) %>
+
+<section class="admin-dashboard">
+  <div class="admin-overlay"></div>
+  <div class="admin-container">
+    <h1>Manage Articles</h1>
 
     <% if (articles && articles.length > 0) { %>
-        <table border="1" cellpadding="10">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Description</th>
-                    <th>File</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% articles.forEach(article => { %>
-                    <tr>
-                        <td><%= article.title %></td>
-                        <td><%= article.author %></td>
-                        <td><%= article.description %></td>
-                        <td>
-                            <a href="/uploads/<%= article.filename %>" target="_blank">View</a> |
-                            <a href="/uploads/<%= article.filename %>" download>Download</a>
-                        </td>
-                        <td><%= article.isApproved ? "Approved" : "Pending" %></td>
-                        <td>
-                            <% if (!article.isApproved) { %>
-                                <form action="/admin/articles/<%= article._id %>/approve" method="POST">
-                                    <button type="submit">Approve</button>
-                                </form>
-                            <% } else { %>
-                                Already Approved
-                            <% } %>
-                        </td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
+      <div class="dashboard-grid">
+        <% articles.forEach(article => { %>
+          <div class="card">
+            <h3><%= article.title %></h3>
+            <p><strong>Author:</strong> <%= article.author %></p>
+            <p><strong>Description:</strong> <%= article.description %></p>
+            <p><strong>Status:</strong>
+              <% if (article.isApproved) { %>
+                <span class="approved">✔ Approved</span>
+              <% } else { %>
+                <span class="pending">⏳ Pending</span>
+              <% } %>
+            </p>
+
+            <div class="card-actions">
+              <a href="/admin/download/<%= article.filename %>" target="_blank" class="btn btn-view">View</a>
+              <% if (!article.isApproved) { %>
+                <form action="/admin/articles/<%= article._id %>/approve" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-approve">Approve</button>
+                </form>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
     <% } else { %>
-        <p>No articles found.</p>
+      <p>No articles found.</p>
     <% } %>
 
-    <a href="/admin" class="btn">Back to Dashboard</a>
-</body>
-</html>
+    <div style="text-align:center; margin-top:30px;">
+      <a href="/admin" class="btn">⬅ Back to Dashboard</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

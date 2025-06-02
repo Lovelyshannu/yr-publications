@@ -8,22 +8,23 @@
     <button type="submit">Search</button>
   </form>
 
-  <% if(articles.length === 0) { %>
-    <p>No articles found.</p>
+   <% if(articles.length === 0) { %>
+    <p>No approved articles available.</p>
   <% } else { %>
     <ul class="article-list">
       <% articles.forEach(article => { %>
-        <% if (article.isApproved) { %>
-          <li>
-            <h3><%= article.title %></h3>
-            <p><strong>Author:</strong> <%= article.author %></p>
-            <p><%= article.description %></p>
-            <% if (user && user.isAdmin) { %>
-              <a href="/admin/download/<%= article.filename %>">Download Article</a>
-            <% } %>
-            <p><small>Published on <%= article.createdAt.toDateString() %></small></p>
-          </li>
-        <% } %>
+        <li>
+          <h3><%= article.title %></h3>
+          <p><strong>Author:</strong> <%= article.author %></p>
+          <p><%= article.description %></p>
+          <p><small>Published on <%= article.createdAt.toDateString() %></small></p>
+
+          <% if (user && user.isAdmin) { %>
+            <a href="/admin/download/<%= article.fileName %>">Download</a>
+          <% } else { %>
+            <em style="color: gray;">Download restricted to admins</em>
+          <% } %>
+        </li>
       <% }) %>
     </ul>
   <% } %>
