@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const articleController = require('../controllers/articleController');
 const { isAuthenticated } = require('../Middleware/authMiddleware');
-
+const adminController = require('../controllers/adminController');
 const Article = require('../models/article');
-
-router.get('/', articleController.listArticles);
 
 router.get('/', async (req, res) => {
   try {
@@ -20,5 +18,6 @@ router.get('/', async (req, res) => {
 
 router.get('/upload', isAuthenticated, articleController.getUpload);
 router.post('/upload', isAuthenticated, articleController.postUpload);
+router.post('/articles/:id/decline', isAuthenticated, isAdmin, adminController.declineArticle);
 
 module.exports = router;

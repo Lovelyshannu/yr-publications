@@ -13,11 +13,15 @@
             <p><strong>Author:</strong> <%= article.author %></p>
             <p><strong>Description:</strong> <%= article.description %></p>
             <p><strong>Status:</strong>
-              <% if (article.isApproved) { %>
-                <span class="approved">✔ Approved</span>
-              <% } else { %>
-                <span class="pending">⏳ Pending</span>
-              <% } %>
+              <p><strong>Status:</strong>
+                <% if (article.status === 'approved') { %>
+                  <span class="approved">✔ Approved</span>
+                <% } else if (article.status === 'declined') { %>
+                  <span class="declined">❌ Declined</span>
+                <% } else { %>
+                  <span class="pending">⏳ Pending</span>
+                <% } %>
+              </p>
             </p>
 
             <div class="card-actions">

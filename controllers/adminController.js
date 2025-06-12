@@ -33,7 +33,7 @@ exports.listUsers = async (req, res) => {
 
 // List articles
 exports.listArticles = async (req, res) => {
-  const articles = await Article.find().populate('uploader');
+  const articles = await Article.find({ isDeclined: { $ne: true } }).populate('uploader');
   res.render('admin-articles', { articles });
 };
 
@@ -51,6 +51,21 @@ exports.approveArticle = async (req, res) => {
   req.flash('success_msg', 'Article approved and now visible publicly');
   res.redirect('/admin/articles');
 };
+
+exports.declineArticle = async (req, res) => {
+  const article = await Article.findById(req.params.id);
+  if (!article) {
+    req.flash('error_msg', 'Article not found');
+    return res.redirect('/admin/articles');
+  }
+
+  article.status = 'declined';
+  await article.save();
+
+  req.flash('success_msg', 'Article declined');
+  res.redirect('/admin/articles');
+};
+
 
 // Publish article
 exports.publishArticle = async (req, res) => {

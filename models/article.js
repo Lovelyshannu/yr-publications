@@ -18,6 +18,11 @@ const articleSchema = new mongoose.Schema({
     default: 'pending'
   },
 
+  isDeclined: {
+    type: Boolean,
+    default: false
+  },
+
   createdAt: { type: Date, default: Date.now }
 });
 

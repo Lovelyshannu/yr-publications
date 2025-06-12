@@ -69,3 +69,20 @@ exports.postUpload = async (req, res) => {
     res.redirect('/articles/upload');
   }
 };
+
+
+// Decline article
+exports.declineArticle = async (req, res) => {
+  const article = await Article.findById(req.params.id);
+  if (!article) {
+    req.flash('error_msg', 'Article not found');
+    return res.redirect('/admin/articles');
+  }
+
+  article.isApproved = false; // Optional, just to be sure
+  article.isDeclined = true; // You must add this field in your model
+  await article.save();
+
+  req.flash('success_msg', 'Article declined');
+  res.redirect('/admin/articles');
+};
