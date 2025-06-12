@@ -13,8 +13,8 @@ exports.listArticles = async (req, res) => {
     ];
   }
 
-  const articles = await Article.find(query).sort({ createdAt: -1 });
-  res.render('articles', { articles, search: req.query.search || '' });
+  const articles = await Article.find({ status: 'approved' }).sort({ createdAt: -1 });
+  res.render('articles', { articles, user: req.session.user });
 };
 
 

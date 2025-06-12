@@ -22,6 +22,7 @@
           <% if (user && user.isAdmin) { %>
             <a href="/admin/download/<%= article.fileName %>">Download</a>
           <% } else { %>
+            <a href="/uploads/articles/<%= article.filename %>" target="_blank">View</a>
             <em style="color: gray;">Download restricted to admins</em>
           <% } %>
         </li>

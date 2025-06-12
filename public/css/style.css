@@ -383,6 +383,17 @@ main {
   border-radius: 5px;
 }
 
+.btn-view {
+  background: #4299e1;
+  color: white;
+  margin-right: 8px;
+}
+
+.btn-approve {
+  background: #38a169;
+  color: white;
+}
+
 .admin-dashboard {
   position: relative;
   background: url('/images/admin-bg.jpg') center/cover no-repeat;
