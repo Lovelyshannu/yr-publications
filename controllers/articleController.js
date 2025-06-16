@@ -99,19 +99,40 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const mailOptions = {
-  from: '"YR Publication" <no-reply@yrpublication.com>',
-  to: req.session.user.email,
-  subject: 'Article Upload Confirmation',
-  html: `<p>Hi ${req.session.user.name},</p>
-         <p>Your article "<strong>${title}</strong>" was uploaded successfully. We'll notify you once it's approved.</p>
-         <p>Thanks,<br/>YR Publication Team</p>`
-};
+exports.postUpload = async (req, res) => {
+  try {
+    const userEmail = req.session.user?.email;
 
-transporter.sendMail(mailOptions, (err, info) => {
-  if (err) {
-    console.error('Email error:', err);
-  } else {
-    console.log('Confirmation email sent:', info.response);
+    // Set up nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,     // your gmail or smtp email
+        pass: process.env.EMAIL_PASS      // your app-specific password
+      }
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: req.session.user.email,
+      subject: 'Article Submission Confirmation',
+      text: `Hi ${req.session.user.name}, your article has been received and is pending approval.`
+    };
+
+    // Send confirmation email
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.error('Error sending email:', err);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+
+    req.flash('success_msg', 'Article uploaded successfully!');
+    res.redirect('/articles/upload');
+  } catch (error) {
+    console.error(error);
+    req.flash('error_msg', 'Article upload failed.');
+    res.redirect('/articles/upload');
   }
-});
+};
