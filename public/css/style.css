@@ -111,8 +111,8 @@ header {
   transition: all 0.4s ease;
 }
 
-p, a, label, textarea, button{
-  font-size : 1.2em;
+p, a, label, textarea, button, input{
+  font-size : 1.1em;
 }
 
 .alert.success {
