@@ -1,32 +1,45 @@
 <%- include('partials/header', { title: 'Home', active: 'home' }) %>
 
-<section class="hero-section">
-  <div class="hero-text">
-    <h1>Publish Articles Online With Confidence</h1>
-    <p>Academic publishing made easy for students, researchers, authors, and bloggers.</p>
-    <a href="/upload" class="cta-button">Get Published Now</a>
+<section class="hero-section modern-hero">
+  <div class="container hero-content">
+    <div class="hero-left">
+      <h1 class="hero-title">Get Published. Get Recognized.</h1>
+      <p class="hero-subtitle">Fast, affordable, and trusted platform for students, researchers, and writers.</p>
+      <a href="/upload" class="btn btn-primary">Publish My Article</a>
+    </div>
+    <div class="hero-right">
+      <img src="/images/hero-illustration.png" alt="Hero Illustration" />
+    </div>
   </div>
 </section>
 
-<section class="features">
-  <div class="feature-card">
-    <h2>Fast & Affordable Publishing</h2>
-    <p>Submit your research and receive verified certificates of publication within days.</p>
-  </div>
-  <div class="feature-card">
-    <h2>Verified Certificates</h2>
-    <p>Every published article comes with a digitally verifiable certificate.</p>
-  </div>
-  <div class="feature-card">
-    <h2>Support for All Writers</h2>
-    <p>We welcome students, researchers, writers, and bloggers to showcase their work.</p>
+<section class="features modern-features container">
+  <h2 class="section-title">Why Choose YR Publication?</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <img src="/images/icon-speed.svg" alt="Fast" />
+      <h3>Fast & Affordable</h3>
+      <p>Quick turnaround and low cost for every publication.</p>
+    </div>
+    <div class="feature-card">
+      <img src="/images/icon-certificate.svg" alt="Certificate" />
+      <h3>Verified Certificates</h3>
+      <p>Each article comes with a verifiable certificate, trusted worldwide.</p>
+    </div>
+    <div class="feature-card">
+      <img src="/images/icon-support.svg" alt="Support" />
+      <h3>All Writers Welcome</h3>
+      <p>Support for students, authors, bloggers, and academicians.</p>
+    </div>
   </div>
 </section>
 
-<section class="call-to-action">
-  <h2>Start Your Publishing Journey</h2>
-  <p>Get your article published today and receive your certificate instantly.</p>
-  <a href="/register" class="cta-button">Join Now</a>
+<section class="cta-section">
+  <div class="container">
+    <h2>Start Your Publishing Journey Today</h2>
+    <p>Submit your article and get recognized by a global audience.</p>
+    <a href="/register" class="btn btn-secondary">Register & Upload</a>
+  </div>
 </section>
 
 <%- include('partials/footer') %>
