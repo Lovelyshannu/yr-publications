@@ -55,13 +55,12 @@
 </nav>
   </header>
   <main>
-   <% if(success_msg && success_msg.trim().length > 0) { %>
-  <div class="alert success"><%= success_msg %></div>
-<% } %>
-<% if(error_msg && error_msg.trim().length > 0) { %>
-  <div class="alert error"><%= error_msg %></div>
-<% } %>
-<% if(error && error.trim().length > 0) { %>
-  <div class="alert error"><%= error %></div>
-<% } %>
+  <% if(success_msg && success_msg.length > 0) { %>
+    <div class="alert success"><%= success_msg[0] %></div>
+  <% } %>
+
+  <% if(error_msg && error_msg.length > 0) { %>
+    <div class="alert error"><%= error_msg[0] %></div>
+  <% } %>
+
 

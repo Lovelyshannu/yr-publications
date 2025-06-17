@@ -25,40 +25,72 @@ exports.listArticles = async (req, res) => {
 
 // Upload page
 exports.getUpload = (req, res) => {
-  res.render('upload', { active: 'articles' });
+  res.render('upload', {
+    active: 'articles',
+    user: req.session.user,
+    success_msg: req.flash('success_msg'),
+    error_msg: req.flash('error_msg')
+  });
 };
+
 
 // Handle article upload
 exports.postUpload = async (req, res) => {
   try {
-    const { title, author, description } = req.body;
-    const articleFile = req.files.articleFile;
+    console.log("FILES:", req.files);
+    console.log("BODY:", req.body);
 
-    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (!allowedTypes.includes(articleFile.mimetype)) {
-      req.flash('error_msg', 'Only PDF or DOCX files are allowed');
+    const { title, author, description } = req.body;
+    const file = req.files?.articleFile;
+
+    if (!file) {
+      req.flash('error_msg', 'No file uploaded.');
       return res.redirect('/articles/upload');
     }
+
+    const newFileName = Date.now() + '_' + file.name;
+    const uploadPath = path.join(__dirname, '..', 'uploads/articles', newFileName);
+
+    await file.mv(uploadPath);
 
     const newArticle = new Article({
       title,
       author,
       description,
-      fileData: articleFile.data,
-      fileMimeType: articleFile.mimetype,
-      fileName: articleFile.name,
-      isApproved: false
+      filePath: `/uploads/articles/${newFileName}`,
+      uploadDate: new Date(),
+      uploadedBy: req.user._id
     });
 
     await newArticle.save();
-    req.flash('success_msg', 'Article uploaded successfully! Awaiting admin approval.');
+    console.log("Article saved successfully!");
+
+    // Send confirmation email
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: req.user.email,
+      subject: 'Article Submission Confirmation',
+      text: `Hi ${req.user.name}, your article "${title}" was submitted successfully.`
+    });
+
+    console.log("Email sent successfully");
+    req.flash('success_msg', 'Article uploaded and confirmation email sent.');
     res.redirect('/articles/upload');
   } catch (err) {
-    console.error(err);
-    req.flash('error_msg', 'Upload failed.');
+    console.error("Upload error:", err);
+    req.flash('error_msg', 'Something went wrong while uploading.');
     res.redirect('/articles/upload');
   }
 };
+
 
 // Decline article
 exports.declineArticle = async (req, res) => {
@@ -98,41 +130,3 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASS
   }
 });
-
-exports.postUpload = async (req, res) => {
-  try {
-    const userEmail = req.session.user?.email;
-
-    // Set up nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,     // your gmail or smtp email
-        pass: process.env.EMAIL_PASS      // your app-specific password
-      }
-    });
-
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: req.session.user.email,
-      subject: 'Article Submission Confirmation',
-      text: `Hi ${req.session.user.name}, your article has been received and is pending approval.`
-    };
-
-    // Send confirmation email
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.error('Error sending email:', err);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
-
-    req.flash('success_msg', 'Article uploaded successfully!');
-    res.redirect('/articles/upload');
-  } catch (error) {
-    console.error(error);
-    req.flash('error_msg', 'Article upload failed.');
-    res.redirect('/articles/upload');
-  }
-};

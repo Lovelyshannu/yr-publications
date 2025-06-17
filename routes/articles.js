@@ -5,26 +5,23 @@ const { isAuthenticated, isAdmin } = require('../Middleware/authMiddleware');
 const adminController = require('../controllers/adminController');
 const Article = require('../models/article');
 
-router.get('/view/:id', async (req, res) => {
-  try {
-    const article = await Article.findById(req.params.id).populate('uploader');
-
-    if (!article || article.status !== 'approved') {
-      req.flash('error_msg', 'This article is not available for viewing.');
-      return res.redirect('/articles');
-    }
-
-    res.render('view-article', { article, user: req.session.user });
-  } catch (err) {
-    console.error(err);
-    req.flash('error_msg', 'An error occurred while loading the article.');
-    res.redirect('/articles');
-  }
+// Download route (admin only)
+router.get('/download/:id', isAuthenticated, isAdmin, async (req, res) => {
+  const article = await Article.findById(req.params.id);
+  if (!article) return res.status(404).send('Article not found');
+  res.set('Content-Type', article.fileMimeType);
+  res.set('Content-Disposition', `attachment; filename="${article.fileName}"`);
+  res.send(article.fileData);
 });
 
-router.get('/:id', articleController.viewArticle); // 👈 Make sure this is after all specific routes
-router.get('/upload', isAuthenticated, articleController.getUpload);
+// Upload routes
+router.get('/upload', isAuthenticated, articleController.getUpload);   
 router.post('/upload', isAuthenticated, articleController.postUpload);
+
+// Admin decline article
 router.post('/articles/:id/decline', isAuthenticated, isAdmin, adminController.declineArticle);
+
+// 🔻 LAST: generic ID route
+router.get('/:id', articleController.viewArticle);
 
 module.exports = router;

@@ -2,6 +2,22 @@
 
 <section class="upload-section">
   <div class="upload-card">
+
+    <!-- Flash Messages -->
+    <% if (success_msg && success_msg.length > 0) { %>
+      <% success_msg.forEach(function(msg) { %>
+        <div class="alert success"><%= msg %></div>
+      <% }) %>
+    <% } %>
+
+    <% if (error_msg && error_msg.length > 0) { %>
+      <% error_msg.forEach(function(msg) { %>
+        <div class="alert error"><%= msg %></div>
+      <% }) %>
+    <% } %>
+
+
+    <!-- Upload Form Logic -->
     <% if (user && !user.isAdmin) { %>
       <h1>Upload New Article</h1>
       <form method="POST" action="/articles/upload" enctype="multipart/form-data" class="upload-form">
@@ -14,16 +30,18 @@
         <label for="description">Description:</label>
         <textarea name="description" id="description" rows="4" required></textarea>
 
-        <label for="file">Select Article File (PDF/DOCX):</label>
+        <label for="articleFile">Select Article File (PDF/DOCX):</label>
         <input type="file" name="articleFile" id="articleFile" accept=".pdf,.doc,.docx" required />
 
         <button type="submit" class="upload-btn">Upload Article</button>
       </form>
+
     <% } else if (!user) { %>
       <p>Please <a href="/login">login</a> to upload articles.</p>
     <% } else { %>
       <p>Admins cannot upload articles.</p>
     <% } %>
+    
   </div>
 </section>
 

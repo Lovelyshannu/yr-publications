@@ -8,6 +8,7 @@ const fileUpload = require('express-fileupload');
 const flash = require('connect-flash');
 const app = express();
 require('dotenv').config();
+app.use(require('express-fileupload')());
 
 dotenv.config();
 
@@ -30,8 +31,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI, collectionName: 'sessions' })
 }));
 

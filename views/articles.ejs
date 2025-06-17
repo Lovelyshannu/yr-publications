@@ -15,20 +15,23 @@
     <% } else { %>
       <div class="articles-grid">
         <% articles.forEach(article => { %>
-          
           <div class="article-card">
             <h2><%= article.title %></h2>
             <p><strong>Author:</strong> <%= article.author %></p>
             <p><%= article.description %></p>
-            <p><small>Published on <%= article.createdAt.toDateString() %></small></p>
-            <% if (user && user.isAdmin) { %>
-              <a href="/admin/download/<%= article.filename %>" class="btn">Download</a>
+
+            <% if (article.fileMimeType === 'application/pdf') { %>
+              <iframe src="data:application/pdf;base64,<%= article.fileData.toString('base64') %>" width="100%" height="500px"></iframe>
             <% } else { %>
-              <a href="/articles/<%= article._id %>" class="btn btn-view">View Details</a>
-              <span class="note">Download available for paid once only</span>
+              <p>File Type: <%= article.fileMimeType %></p>
+            <% } %>
+
+            <% if (user && user.role === 'admin') { %>
+              <a href="/articles/download/<%= article._id %>" class="btn btn-primary">Download</a>
             <% } %>
           </div>
-        <% }) %>
+        <% }); %>
+
       </div>
     <% } %>
   </div>
