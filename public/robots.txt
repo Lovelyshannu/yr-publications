@@ -6,5 +6,7 @@ Disallow: /articles/upload
 Disallow: /certificates
 
 Allow: /
+Allow: /articles
+Allow: /about
 
 Sitemap: https://shanmukh-trlv.onrender.com/sitemap.xml
