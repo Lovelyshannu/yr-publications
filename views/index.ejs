@@ -1,5 +1,30 @@
 <%- include('partials/header', { title: 'Home', active: 'home' }) %>
 
+<%- include('partials/seo', {
+  title: 'Published Articles',
+  description: 'Browse our verified and approved research articles.',
+  keywords: 'articles, publications, research, YR Publication',
+  path: '/articles'
+}) %>
+
+<head>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "YR Publication",
+  "url": "https://shanmukh-trlv.onrender.com/",
+  "logo": "https://shanmukh-trlv.onrender.com/images/logo.png",
+  "sameAs": [
+    "https://facebook.com/yourpage",
+    "https://twitter.com/yourpage",
+    "https://instagram.com/yourpage"
+  ]
+}
+</script>
+
+</head>
+
 <title>Publish Research Articles | YR Publication</title>
 <meta name="description" content="Publish academic articles and get verified certificates. Fast, affordable journal publication platform.">
 <meta name="keywords" content="journal publication, publish research, academic publishing, verified certificate, student articles">

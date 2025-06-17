@@ -1,8 +1,11 @@
 <%- include('partials/header', { title: 'Articles', active: 'articles' }) %>
 
-<title>Publish Research Articles | YR Publication</title>
-<meta name="description" content="Publish academic articles and get verified certificates. Fast, affordable journal publication platform.">
-<meta name="keywords" content="journal publication, publish research, academic publishing, verified certificate, student articles">
+<%- include('partials/seo', {
+  title: 'Published Articles',
+  description: 'Browse our verified and approved research articles.',
+  keywords: 'articles, publications, research, YR Publication',
+  path: '/articles'
+}) %>
 
 <section class="modern-section">
   <div class="overlay"></div>
@@ -12,7 +15,7 @@
     <form method="GET" action="/articles" class="search-form">
       <input type="text" name="search" placeholder="Search by title or author" value="<%= typeof search !== 'undefined' ? search : '' %>" />
       <button type="submit">Search</button>
-    </form>    
+    </form>
 
     <% if (articles.length === 0) { %>
       <p>No articles found.</p>
@@ -33,9 +36,26 @@
             <% if (user && user.role === 'admin') { %>
               <a href="/articles/download/<%= article._id %>" class="btn btn-primary">Download</a>
             <% } %>
+
+            <!-- Schema Markup for SEO (structured data) -->
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "ScholarlyArticle",
+              "headline": "<%= article.title %>",
+              "author": {
+                "@type": "Person",
+                "name": "<%= article.author %>"
+              },
+              "datePublished": "<%= article.createdAt.toISOString() %>",
+              "publisher": {
+                "@type": "Organization",
+                "name": "YR Publication"
+              }
+            }
+            </script>
           </div>
         <% }); %>
-
       </div>
     <% } %>
   </div>

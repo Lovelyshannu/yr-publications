@@ -1,0 +1,19 @@
+<%- include('partials/header', { title: 'Blogs', active: 'blogs' }) %>
+<%- include('partials/seo', {
+  title: 'Blog & Resources',
+  description: 'Tips and guides on academic writing, publishing, and research.',
+  keywords: 'blog, academic tips, publishing advice',
+  path: '/blogs'
+}) %>
+
+<section class="blog-section">
+  <% blogs.forEach(blog => { %>
+    <article>
+      <h2><%= blog.title %></h2>
+      <p><%= blog.content.substring(0, 200) %>...</p>
+      <p><small>By <%= blog.author %> | <%= blog.createdAt.toDateString() %></small></p>
+    </article>
+  <% }) %>
+</section>
+
+<%- include('partials/footer') %>
