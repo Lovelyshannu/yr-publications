@@ -49,6 +49,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', require('./routes/auth'));
 app.use('/articles', require('./routes/articles'));
+app.use('/blog', require('./routes/blog'));
 app.use('/certificates', require('./routes/certificates'));
 app.use('/admin', require('./routes/admin'));
 app.use('/contact', require('./routes/contact'));

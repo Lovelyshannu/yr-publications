@@ -2,18 +2,23 @@
 <%- include('partials/seo', {
   title: 'Blog & Resources',
   description: 'Tips and guides on academic writing, publishing, and research.',
-  keywords: 'blog, academic tips, publishing advice',
+  keywords: 'journal blog, research tips, publishing guide, writing help',
   path: '/blogs'
 }) %>
 
-<section class="blog-section">
-  <% blogs.forEach(blog => { %>
-    <article>
-      <h2><%= blog.title %></h2>
-      <p><%= blog.content.substring(0, 200) %>...</p>
-      <p><small>By <%= blog.author %> | <%= blog.createdAt.toDateString() %></small></p>
-    </article>
-  <% }) %>
+<section class="blog-section container">
+  <h1>Latest Blog Articles</h1>
+  <% if (!posts || posts.length === 0) { %>
+    <p>No blog posts found.</p>
+  <% } else { %>
+    <% posts.forEach(post => { %>
+      <div class="blog-post">
+        <h3><%= post.title %></h3>
+        <p><%= post.content %></p>
+        <a href="/blogs/<%= post.slug %>" class="btn btn-primary">Read More</a>
+      </div>
+    <% }) %>
+  <% } %>
 </section>
 
 <%- include('partials/footer') %>
