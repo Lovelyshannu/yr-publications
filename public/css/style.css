@@ -436,6 +436,56 @@ main {
   z-index: 0;
 }
 
+/* Plagiarism */
+.plag-container,
+.plag-result-box {
+  width: 90%;
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.plag-input {
+  width: 100%;
+  padding: 12px;
+  margin: 15px 0;
+  border: 2px solid #8d45ff;
+  border-radius: 8px;
+}
+
+.plag-btn {
+  background: #7c3aed;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 15px;
+}
+
+.plag-btn:hover {
+  background: #5b21b6;
+}
+
+.score {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.safe {
+  color: green;
+  font-size: 18px;
+}
+
+.danger {
+  color: red;
+  font-size: 18px;
+}
+
 /* Card on top of background */
 .auth-card, .upload-card {
   position: relative;
