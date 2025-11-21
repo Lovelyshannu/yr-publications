@@ -1,0 +1,30 @@
+<%- include('partials/header', { title: 'Public Documents', active: '' }) %>
+
+<%- include('partials/seo', {
+  title: 'Published Articles',
+  description: 'Browse our verified and approved research articles.',
+  keywords: 'articles, publications, research, YR Publication',
+  path: '/articles'
+}) %>
+
+<section class="documents-section">
+  <h1>Public Documents</h1>
+  <ul>
+    <% articles.forEach(doc => { %>
+      <li>
+        <h3><%= doc.title %> by <%= doc.author %></h3>
+        <p><%= doc.description %></p>
+
+        <% if (user && user.isAdmin) { %>
+          <a href="/admin/download/<%= doc.filename %>" target="_blank">Download</a>
+        <% } else { %>
+          <p style="color: gray;"><em>Download available for admin only</em></p>
+        <% } %>
+
+        <p><small>Uploaded on <%= doc.createdAt.toDateString() %></small></p>
+      </li>
+    <% }) %>
+  </ul>
+</section>
+
+<%- include('partials/footer') %>

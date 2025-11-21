@@ -1,0 +1,64 @@
+<%- include('partials/header', { title: 'Articles', active: 'articles' }) %>
+
+<%- include('partials/seo', {
+  title: 'Published Articles',
+  description: 'Browse our verified and approved research articles.',
+  keywords: 'articles, publications, research, YR Publication',
+  path: '/articles'
+}) %>
+
+<section class="modern-section">
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>Published Articles</h1>
+
+    <form method="GET" action="/articles" class="search-form">
+      <input type="text" name="search" placeholder="Search by title or author" value="<%= typeof search !== 'undefined' ? search : '' %>" />
+      <button type="submit">Search</button>
+    </form>
+
+    <% if (articles.length === 0) { %>
+      <p>No articles found.</p>
+    <% } else { %>
+      <div class="articles-grid">
+        <% articles.forEach(article => { %>
+          <div class="article-card">
+            <h2><%= article.title %></h2>
+            <p><strong>Author:</strong> <%= article.author %></p>
+            <p><%= article.description %></p>
+
+            <% if (article.fileMimeType === 'application/pdf') { %>
+              <iframe src="data:application/pdf;base64,<%= article.fileData.toString('base64') %>" width="100%" height="500px"></iframe>
+            <% } else { %>
+              <p>File Type: <%= article.fileMimeType %></p>
+            <% } %>
+
+            <% if (user && user.role === 'admin') { %>
+              <a href="/articles/download/<%= article._id %>" class="btn btn-primary">Download</a>
+            <% } %>
+
+            <!-- Schema Markup for SEO (structured data) -->
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "ScholarlyArticle",
+              "headline": "<%= article.title %>",
+              "author": {
+                "@type": "Person",
+                "name": "<%= article.author %>"
+              },
+              "datePublished": "<%= article.createdAt.toISOString() %>",
+              "publisher": {
+                "@type": "Organization",
+                "name": "YR Publication"
+              }
+            }
+            </script>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
