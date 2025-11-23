@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%- include('partials/header') %>
 
 <div class="plag-container">
@@ -14,3 +15,21 @@
 </div>
 
 <%- include('partials/footer') %>
+=======
+<%- include('partials/header') %>
+
+<div class="plag-container">
+  <h2>Verify Plagiarism Certificate</h2>
+
+  <form method="POST">
+    <input type="text" name="certId" placeholder="Enter Certificate ID" required class="plag-input">
+    <button class="plag-btn">Verify</button>
+  </form>
+
+  <% if (error) { %>
+    <p class="danger"><%= error %></p>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>
+>>>>>>> 8a9e90c07382fcc1680dca1297dc6fed58336e68

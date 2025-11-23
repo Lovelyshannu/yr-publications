@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%- include('partials/header', { title: 'Blogs', active: 'blogs' }) %>
 <%- include('partials/seo', {
   title: 'Blog & Resources',
@@ -22,3 +23,29 @@
 </section>
 
 <%- include('partials/footer') %>
+=======
+<%- include('partials/header', { title: 'Blogs', active: 'blogs' }) %>
+<%- include('partials/seo', {
+  title: 'Blog & Resources',
+  description: 'Tips and guides on academic writing, publishing, and research.',
+  keywords: 'journal blog, research tips, publishing guide, writing help',
+  path: '/blogs'
+}) %>
+
+<section class="blog-section container">
+  <h1>Latest Blog Articles</h1>
+  <% if (!posts || posts.length === 0) { %>
+    <p>No blog posts found.</p>
+  <% } else { %>
+    <% posts.forEach(post => { %>
+      <div class="blog-post">
+        <h3><%= post.title %></h3>
+        <p><%= post.content %></p>
+        <a href="/blogs/<%= post.slug %>" class="btn btn-primary">Read More</a>
+      </div>
+    <% }) %>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+>>>>>>> 8a9e90c07382fcc1680dca1297dc6fed58336e68

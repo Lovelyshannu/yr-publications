@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%- include('partials/header', { title: 'Home', active: 'home' }) %>
 
 <%- include('partials/seo', {
@@ -86,3 +87,93 @@
 </section>
 
 <%- include('partials/footer') %>
+=======
+<%- include('partials/header', { title: 'Home', active: 'home' }) %>
+
+<%- include('partials/seo', {
+  title: 'Published Articles',
+  description: 'Browse our verified and approved research articles.',
+  keywords: 'articles, publications, research, YR Publication',
+  path: '/articles'
+}) %>
+
+<head>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "YR Publication",
+  "url": "https://shanmukh-trlv.onrender.com/",
+  "logo": "https://shanmukh-trlv.onrender.com/images/logo.png",
+  "sameAs": [
+    "https://facebook.com/yourpage",
+    "https://twitter.com/yourpage",
+    "https://instagram.com/yourpage"
+  ]
+}
+</script>
+
+</head>
+
+<title>Publish Research Articles | YR Publication</title>
+<meta name="description" content="Publish academic articles and get verified certificates. Fast, affordable journal publication platform.">
+<meta name="keywords" content="journal publication, publish research, academic publishing, verified certificate, student articles">
+
+<section class="hero-section modern-hero" style="background-image: url('/images/hero-bg.jpg');">
+  <div class="container hero-content">
+    <div class="hero-left">
+      <h1 class="hero-title">Get Published. Get Recognized.</h1>
+      <p class="hero-subtitle">Fast, affordable, and trusted platform for students, researchers, and writers.</p>
+      <% if (user) { %>
+        <a href="/articles/upload" class="btn btn-primary">Publish My Article</a>
+      <% } else { %>
+        <a href="/register" class="btn btn-primary">Publish My Article</a>
+      <% } %>
+    </div>
+    <div class="hero-right">
+      <img src="/images/hero-illustration.jpg" alt="Hero Illustration" />
+    </div>
+  </div>
+</section>
+
+<section class="blog-preview-section">
+  <div class="container">
+    <h2>Explore Our Blog & Resources</h2>
+    <p>Discover tips, tools, and guides that help students and researchers publish with confidence.</p>
+    <p>Whether you're a first-time author or an experienced academic, our blog has something for you.</p>
+    
+    <a href="/blog" class="btn btn-secondary">📚 Read Our Blog</a>
+  </div>
+</section>
+
+<section class="features modern-features container">
+  <h2 class="section-title">Why Choose YR Publication?</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <img src="/images/icon-speed.jpg" alt="Fast" />
+      <h3>Fast & Affordable</h3>
+      <p>Quick turnaround and low cost for every publication.</p>
+    </div>
+    <div class="feature-card">
+      <img src="/images/icon-certificate.jpg" alt="Certificate" />
+      <h3>Verified Certificates</h3>
+      <p>Each article comes with a verifiable certificate, trusted worldwide.</p>
+    </div>
+    <div class="feature-card">
+      <img src="/images/icon-support.jpg" alt="Support" />
+      <h3>All Writers Welcome</h3>
+      <p>Support for students, authors, bloggers, and academicians.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Start Your Publishing Journey Today</h2>
+    <p>Submit your article and get recognized by a global audience.</p>
+    <a href="/register" class="btn btn-secondary">Register & Upload</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+>>>>>>> 8a9e90c07382fcc1680dca1297dc6fed58336e68

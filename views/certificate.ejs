@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%- include('partials/header', { title: 'Certificate Verification', active: 'certificate' }) %>
 
 <section class="certificate-section">
@@ -23,3 +24,30 @@
 </section>
 
 <%- include('partials/footer') %>
+=======
+<%- include('partials/header', { title: 'Certificate Verification', active: 'certificate' }) %>
+
+<section class="certificate-section">
+  <h1>Verify Your Certificate</h1>
+
+  <form method="POST" action="/certificates/verify" class="certificate-form">
+    <label for="certNumber">Enter Certificate Number:</label>
+    <input type="text" id="certNumber" name="certNumber" required />
+    <button type="submit">Verify</button>
+  </form>
+
+  <% if (certificate) { %>
+    <div class="certificate-details">
+      <h2>Certificate Details</h2>
+      <p><strong>Certificate Number:</strong> <%= certificate.number %></p>
+      <p><strong>Recipient Name:</strong> <%= certificate.recipientName %></p>
+      <p><strong>Issued On:</strong> <%= certificate.issueDate.toDateString() %></p>
+      <a href="/uploads/certificates/<%= certificate.fileName %>" target="_blank" download>Download Certificate</a>
+    </div>
+  <% } else if (verified === false) { %>
+    <p class="error">Certificate number not found or invalid.</p>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+>>>>>>> 8a9e90c07382fcc1680dca1297dc6fed58336e68
